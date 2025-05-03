@@ -7,13 +7,15 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
-            body: Center(
-      child: Container(
-        width: 280,
-        height: 280,
-        child: Lottie.asset('assets/lottie/login.json'),
+      home: Scaffold(
+        body: Center(
+          child: SizedBox(
+            width: 280,
+            height: 280,
+            child: Lottie.asset('assets/lottie/login.json'),
+          ),
+        ),
       ),
-    )));
+    );
   }
 }

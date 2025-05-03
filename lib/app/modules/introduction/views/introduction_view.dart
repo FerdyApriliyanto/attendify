@@ -11,6 +11,8 @@ import 'package:lottie/lottie.dart';
 import '../controllers/introduction_controller.dart';
 
 class IntroductionView extends GetView<IntroductionController> {
+  const IntroductionView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +33,7 @@ class IntroductionView extends GetView<IntroductionController> {
                       fontWeight: FontWeight.w400,
                       color: Colors.grey)),
             ),
-            image: Container(
+            image: SizedBox(
               width: 250,
               height: 250,
               child: Center(
@@ -56,7 +58,7 @@ class IntroductionView extends GetView<IntroductionController> {
                       fontWeight: FontWeight.w400,
                       color: Colors.grey)),
             ),
-            image: Container(
+            image: SizedBox(
               width: 250,
               height: 250,
               child: Center(
@@ -86,7 +88,7 @@ class IntroductionView extends GetView<IntroductionController> {
                 SizedBox(
                   height: 50,
                 ),
-                Container(
+                SizedBox(
                   width: 300,
                   height: 300,
                   child: Center(

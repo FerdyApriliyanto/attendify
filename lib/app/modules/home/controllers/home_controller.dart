@@ -32,6 +32,7 @@ class HomeController extends GetxController {
         .where('receiver', isEqualTo: currentUserEmail)
         .get();
 
+    // ignore: avoid_function_literals_in_foreach_calls
     readStatus.docs.forEach((element) async {
       await chats
           .doc(chatId)

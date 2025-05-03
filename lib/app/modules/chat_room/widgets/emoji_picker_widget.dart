@@ -11,7 +11,7 @@ class EmojiPickerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => controller.isEmojiShown.isTrue
-        ? Container(
+        ? SizedBox(
             height: 300,
             child: EmojiPicker(
               onEmojiSelected: (Category? category, Emoji emoji) {},

@@ -35,12 +35,12 @@ class UserModel {
         keyName: json["keyName"],
         email: json["email"],
         creationTime:
-            json["creationTime"] == null ? null : json["creationTime"],
+            json["creationTime"],
         lastSignInTime:
-            json["lastSignInTime"] == null ? null : json["lastSignInTime"],
+            json["lastSignInTime"],
         photoUrl: json["photoUrl"],
         status: json["status"],
-        updatedTime: json["updatedTime"] == null ? null : json["updatedTime"],
+        updatedTime: json["updatedTime"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -72,7 +72,7 @@ class ChatUser {
   factory ChatUser.fromJson(Map<String, dynamic> json) => ChatUser(
         connection: json["connection"],
         chatId: json["chat_id"],
-        lastTime: json["lastTime"] == null ? null : json["lastTime"],
+        lastTime: json["lastTime"],
         totalUnread: json["total_unread"],
       );
 

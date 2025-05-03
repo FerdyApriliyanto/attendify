@@ -51,7 +51,7 @@ class Chat {
         pengirim: json["pengirim"],
         penerima: json["penerima"],
         pesan: json["pesan"],
-        time: json["time"] == null ? null : json["time"],
+        time: json["time"],
         isRead: json["isRead"],
       );
 

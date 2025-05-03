@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 class CheckInController extends GetxController
     with GetSingleTickerProviderStateMixin {
+  var logger = Logger(printer: PrettyPrinter());
+
   late AnimationController animationController;
   // Lokasi kantor (misalnya: latitude dan longitude kantor)
   final double officeLat = -6.200000;
@@ -36,7 +39,7 @@ class CheckInController extends GetxController
   }
 
   void checkIn() {
-    print("Check-in berhasil");
+    logger.i("Check-in berhasil");
   }
 
   Future<void> checkInAttendace() async {
@@ -48,14 +51,17 @@ class CheckInController extends GetxController
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
           Get.snackbar(
-              'Lokasi Ditolak', 'Izin lokasi diperlukan untuk absensi');
+            'Lokasi Ditolak',
+            'Izin lokasi diperlukan untuk absensi',
+          );
           return;
         }
       }
 
       // 2. Dapatkan lokasi sekarang
       Position currentPosition = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+        desiredAccuracy: LocationAccuracy.high,
+      );
 
       // 3. Hitung jarak dari kantor
       double distance = Geolocator.distanceBetween(
