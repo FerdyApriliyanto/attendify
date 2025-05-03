@@ -30,7 +30,7 @@ class CheckInView extends GetView<CheckInController> {
                     );
                   },
                   child: GestureDetector(
-                      onTap: controller.checkInAttendace,
+                      onTap: controller.checkInAttendance,
                       child: Container(
                           width: 240,
                           height: 240,
@@ -39,7 +39,7 @@ class CheckInView extends GetView<CheckInController> {
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.green.withOpacity(0.5),
+                                color: Colors.green,
                                 blurRadius: 20,
                                 spreadRadius: 5,
                               ),
