@@ -86,13 +86,18 @@ class HomeView extends GetView<HomeController> {
                                 backgroundColor: Colors.black26,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(100),
-                                  child: Image.network(
-                                    dataListTile!["photoUrl"],
-                                  ),
+                                  child:
+                                      dataListTile?["photoUrl"] == null
+                                          ? Image.asset(
+                                            'assets/logo/noimage.png',
+                                          )
+                                          : Image.network(
+                                            dataListTile!["photoUrl"],
+                                          ),
                                 ),
                               ),
                               title: Text(
-                                '${dataListTile['name']}',
+                                '${dataListTile?['name']}',
                                 style: GoogleFonts.inter(
                                   textStyle: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -100,10 +105,10 @@ class HomeView extends GetView<HomeController> {
                                 ),
                               ),
                               subtitle:
-                                  dataListTile['status'] == ''
+                                  dataListTile?['status'] == ''
                                       ? Text('No Status')
                                       : Text(
-                                        '${dataListTile["status"]}',
+                                        '${dataListTile?["status"]}',
                                         style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
                                             fontWeight: FontWeight.w400,
@@ -113,7 +118,9 @@ class HomeView extends GetView<HomeController> {
                               trailing:
                                   data['totalUnread'] == 0
                                       ? Text(
-                                        DateFormat.jm().format(DateTime.parse(data['lastTime'])),
+                                        DateFormat.jm().format(
+                                          DateTime.parse(data['lastTime']),
+                                        ),
                                         style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
                                             fontWeight: FontWeight.w400,
@@ -126,7 +133,9 @@ class HomeView extends GetView<HomeController> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            DateFormat.jm().format(DateTime.parse(data['lastTime'])),
+                                            DateFormat.jm().format(
+                                              DateTime.parse(data['lastTime']),
+                                            ),
                                             style: GoogleFonts.roboto(
                                               textStyle: TextStyle(
                                                 fontWeight: FontWeight.w400,

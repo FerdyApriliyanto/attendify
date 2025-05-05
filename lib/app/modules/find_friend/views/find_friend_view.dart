@@ -100,7 +100,12 @@ class FindFriendView extends GetView<FindFriendController> {
                                 backgroundColor: Colors.black26,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(100),
-                                  child: Image.network(data["photoUrl"]),
+                                  child:
+                                      data["photoUrl"] == null
+                                          ? Image.asset(
+                                            'assets/logo/noimage.png',
+                                          )
+                                          : Image.network(data["photoUrl"]),
                                 ),
                               ),
                               title: Row(

@@ -53,7 +53,10 @@ class ChatRoomView extends GetView<ChatRoomController> {
                     return CircleAvatar(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        child: Image.network(receiverData['photoUrl']),
+                        child:
+                            receiverData['photoUrl'] == null
+                                ? Image.asset('assets/logo/noimage.png')
+                                : Image.network(receiverData['photoUrl']),
                       ),
                     );
                   }
@@ -156,7 +159,9 @@ class ChatRoomView extends GetView<ChatRoomController> {
                                               : false,
                                       message: '${chatsDoc[index]['message']}',
                                       time: '${chatsDoc[index]['time']}',
-                                      image: receiverData['photoUrl'],
+                                      image:
+                                          receiverData['photoUrl'] ??
+                                          '',
                                     ),
                                   ],
                                 );
@@ -174,7 +179,9 @@ class ChatRoomView extends GetView<ChatRoomController> {
                                             : false,
                                     message: '${chatsDoc[index]['message']}',
                                     time: '${chatsDoc[index]['time']}',
-                                    image: receiverData['photoUrl'],
+                                    image:
+                                        receiverData['photoUrl'] ??
+                                        '',
                                   );
                                 } else {
                                   return Column(
@@ -193,7 +200,9 @@ class ChatRoomView extends GetView<ChatRoomController> {
                                         message:
                                             '${chatsDoc[index]['message']}',
                                         time: '${chatsDoc[index]['time']}',
-                                        image: receiverData['photoUrl'],
+                                        image:
+                                            receiverData['photoUrl'] ??
+                                            '',
                                       ),
                                     ],
                                   );
