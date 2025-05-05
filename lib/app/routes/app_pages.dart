@@ -25,11 +25,7 @@ class AppPages {
   AppPages._();
 
   static final routes = [
-    GetPage(
-      name: _Paths.HOME,
-      page: () => HomeView(),
-      binding: HomeBinding(),
-    ),
+    GetPage(name: _Paths.HOME, page: () => HomeView(), binding: HomeBinding()),
     GetPage(
       name: _Paths.INTRODUCTION,
       page: () => IntroductionView(),

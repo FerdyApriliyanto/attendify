@@ -93,7 +93,7 @@ class ProfileView extends GetView<ProfileController> {
                           borderRadius: BorderRadius.circular(6),
                         ),
                         backgroundColor: ColorList.primaryColor,
-                        foregroundColor: Colors.white
+                        foregroundColor: Colors.white,
                       ),
                       child: Text('Edit Profile'),
                     ),
@@ -121,6 +121,12 @@ class ProfileView extends GetView<ProfileController> {
                     ),
                     menuTitle: 'Update Status',
                     onTap: () => Get.toNamed(Routes.UPDATE_STATUS),
+                  ),
+                  SizedBox(height: 26),
+                  ProfileMenuWidget(
+                    menuIcon: Icon(Icons.print_outlined, size: 30),
+                    menuTitle: 'Print Recap',
+                    onTap: () => controller.pickDateAndGeneratePDF(context),
                   ),
                   SizedBox(height: 26),
                   Padding(
