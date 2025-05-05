@@ -1,4 +1,5 @@
 import 'package:attendify/app/utils/color_list.dart';
+import 'package:attendify/app/utils/modern_snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_month_picker/flutter_custom_month_picker.dart';
@@ -19,7 +20,12 @@ class ProfileController extends GetxController {
         if (data.isNotEmpty) {
           generatePDF(data, month, year);
         } else {
-          Get.snackbar("No recap found", "No recap found based on that date");
+          ModernSnackbar.showModernSnackbar(
+            title: 'No recap data found',
+            message: 'No attendance data found in that time',
+            backgroundColor: ColorList.dangerColor,
+            icon: Icons.error
+          );
         }
       },
       initialSelectedMonth: DateTime.now().month,

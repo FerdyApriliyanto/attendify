@@ -1,4 +1,6 @@
 import 'package:attendify/app/auth/auth_controller.dart';
+import 'package:attendify/app/utils/color_list.dart';
+import 'package:attendify/app/utils/modern_snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -65,7 +67,12 @@ class CheckInController extends GetxController
     String uid = authController.userCredential?.user?.uid ?? 'No UID';
 
     if (await hasCheckedInToday(displayName, uid)) {
-      Get.snackbar('Check-In Ditolak', 'Anda sudah absen hari ini');
+      ModernSnackbar.showModernSnackbar(
+        title: 'Check-In Rejected',
+        message: 'You have already checked in today',
+        backgroundColor: ColorList.dangerColor,
+        icon: Icons.error,
+      );
     } else {
       try {
         // 1. Cek permission lokasi
@@ -74,9 +81,11 @@ class CheckInController extends GetxController
             permission == LocationPermission.deniedForever) {
           permission = await Geolocator.requestPermission();
           if (permission == LocationPermission.denied) {
-            Get.snackbar(
-              'Lokasi Ditolak',
-              'Izin lokasi diperlukan untuk absensi',
+            ModernSnackbar.showModernSnackbar(
+              title: 'Location Rejected',
+              message: 'Please allow location access to continue',
+              backgroundColor: ColorList.dangerColor,
+              icon: Icons.error,
             );
             return;
           }
@@ -118,12 +127,26 @@ class CheckInController extends GetxController
                 'userId': uid,
               });
 
-          Get.snackbar('Check-In Berhasil', 'Data berhasil disimpan');
+          ModernSnackbar.showModernSnackbar(
+            title: 'Check-In Accepted',
+            message: 'Thank you for submitting your attendance today',
+            icon: Icons.check_circle,
+          );
         } else {
-          Get.snackbar('Check-In Gagal', 'Anda berada di luar area kantor');
+          ModernSnackbar.showModernSnackbar(
+            title: 'Check-In Rejected',
+            message: 'You are currently outside office area',
+            backgroundColor: ColorList.dangerColor,
+            icon: Icons.error,
+          );
         }
       } catch (e) {
-        Get.snackbar('Terjadi Error', e.toString());
+        ModernSnackbar.showModernSnackbar(
+          title: 'Error Occured',
+          message: e.toString(),
+          backgroundColor: ColorList.dangerColor,
+          icon: Icons.error,
+        );
       }
     }
   }
