@@ -53,6 +53,7 @@ class UpdateStatusView extends GetView<UpdateStatusController> {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   backgroundColor: ColorList.primaryColor,
+                  foregroundColor: Colors.white
                 ),
                 child: Text(
                   'UPDATE',

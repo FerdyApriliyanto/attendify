@@ -103,7 +103,11 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
                 ),
                 child: Text(
                   'UPDATE',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),

@@ -93,6 +93,7 @@ class ProfileView extends GetView<ProfileController> {
                           borderRadius: BorderRadius.circular(6),
                         ),
                         backgroundColor: ColorList.primaryColor,
+                        foregroundColor: Colors.white
                       ),
                       child: Text('Edit Profile'),
                     ),
