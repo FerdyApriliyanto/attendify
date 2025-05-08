@@ -122,12 +122,18 @@ class ProfileView extends GetView<ProfileController> {
                     menuTitle: 'Update Status',
                     onTap: () => Get.toNamed(Routes.UPDATE_STATUS),
                   ),
-                  SizedBox(height: 26),
-                  ProfileMenuWidget(
-                    menuIcon: Icon(Icons.print_outlined, size: 30),
-                    menuTitle: 'Print Recap',
-                    onTap: () => controller.pickDateAndGeneratePDF(context),
-                  ),
+                  authController.currentLoggedInUserModel.value.position ==
+                          'Admin'
+                      ? SizedBox(height: 26)
+                      : SizedBox(),
+                  authController.currentLoggedInUserModel.value.position ==
+                          'Admin'
+                      ? ProfileMenuWidget(
+                        menuIcon: Icon(Icons.print_outlined, size: 30),
+                        menuTitle: 'Print Recap',
+                        onTap: () => controller.pickDateAndGeneratePDF(context),
+                      )
+                      : SizedBox(),
                   SizedBox(height: 26),
                   Padding(
                     padding: const EdgeInsets.only(left: 5),

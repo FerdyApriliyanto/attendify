@@ -12,6 +12,7 @@ class UserModel {
   String? creationTime;
   String? lastSignInTime;
   String? photoUrl;
+  String? position;
   String? status;
   String? updatedTime;
   List<ChatUser>? chats;
@@ -24,6 +25,7 @@ class UserModel {
     this.creationTime,
     this.lastSignInTime,
     this.photoUrl,
+    this.position,
     this.status,
     this.updatedTime,
     this.chats,
@@ -39,6 +41,7 @@ class UserModel {
         lastSignInTime:
             json["lastSignInTime"],
         photoUrl: json["photoUrl"],
+        position: json["position"],
         status: json["status"],
         updatedTime: json["updatedTime"],
       );
@@ -51,6 +54,7 @@ class UserModel {
         "creationTime": creationTime,
         "lastSignInTime": lastSignInTime,
         "photoUrl": photoUrl,
+        "position": position,
         "status": status,
         "updatedTime": updatedTime,
       };

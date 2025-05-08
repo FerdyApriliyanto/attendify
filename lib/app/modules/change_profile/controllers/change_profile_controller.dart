@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 class ChangeProfileController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController positionController = TextEditingController();
   TextEditingController statusController = TextEditingController();
 
   @override
@@ -11,6 +12,7 @@ class ChangeProfileController extends GetxController {
   void onClose() {
     nameController.dispose();
     emailController.dispose();
+    positionController.dispose();
     statusController.dispose();
     super.onClose();
   }

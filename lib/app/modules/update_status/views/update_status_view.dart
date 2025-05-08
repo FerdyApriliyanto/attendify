@@ -19,6 +19,7 @@ class UpdateStatusView extends GetView<UpdateStatusController> {
         authController.currentLoggedInUserModel.value.status ?? "";
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
@@ -53,7 +54,7 @@ class UpdateStatusView extends GetView<UpdateStatusController> {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   backgroundColor: ColorList.primaryColor,
-                  foregroundColor: Colors.white
+                  foregroundColor: Colors.white,
                 ),
                 child: Text(
                   'UPDATE',

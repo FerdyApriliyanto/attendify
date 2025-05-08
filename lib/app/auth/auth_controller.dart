@@ -156,6 +156,10 @@ class AuthController extends GetxController {
             'name': _currentUser!.displayName,
             'keyName': _currentUser!.displayName![0].toUpperCase(),
             'email': _currentUser!.email,
+            'position':
+                _currentUser!.email == '212310012@student.ibik.ac.id'
+                    ? 'Admin'
+                    : 'Employee',
             'photoUrl': _currentUser!.photoUrl,
             'status': '',
             'creationTime':

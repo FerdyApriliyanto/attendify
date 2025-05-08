@@ -20,6 +20,8 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
         authController.currentLoggedInUserModel.value.name!;
     controller.emailController.text =
         authController.currentLoggedInUserModel.value.email!;
+    controller.positionController.text =
+        authController.currentLoggedInUserModel.value.position!;
     controller.statusController.text =
         authController.currentLoggedInUserModel.value.status!;
 
@@ -42,7 +44,6 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
         child: ListView(
           children: [
             AvatarGlow(
-              // endRadius: 75,
               glowColor: Colors.black,
               child: Container(
                 margin: EdgeInsets.all(16),
@@ -51,11 +52,8 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(200),
                   child:
-                      authController
-                              .currentLoggedInUserModel
-                              .value
-                              .photoUrl!
-                              .isEmpty
+                      authController.currentLoggedInUserModel.value.photoUrl ==
+                              null
                           ? Image.asset(
                             'assets/logo/noimage.png',
                             fit: BoxFit.cover,
@@ -79,6 +77,12 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
             ChangeProfileFieldWidget(
               label: 'Email',
               controller: controller.emailController,
+              enabled: false,
+            ),
+            SizedBox(height: 18),
+            ChangeProfileFieldWidget(
+              label: 'Position',
+              controller: controller.positionController,
               enabled: false,
             ),
             SizedBox(height: 18),
