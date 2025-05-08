@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:attendify/app/auth/auth_controller.dart';
 import 'package:attendify/app/utils/color_list.dart';
 import 'package:attendify/app/utils/modern_snackbar.dart';
@@ -13,6 +15,12 @@ class CheckInController extends GetxController
   var logger = Logger(printer: PrettyPrinter());
 
   final authController = Get.find<AuthController>();
+
+  var isLoading = false.obs;
+
+  var currentTime = ''.obs;
+  var currentDate = ''.obs;
+  Timer? _timer;
 
   late AnimationController animationController;
   // Lokasi kantor (misalnya: latitude dan longitude kantor)
@@ -31,6 +39,8 @@ class CheckInController extends GetxController
   @override
   void onInit() {
     super.onInit();
+    _updateTime();
+    _timer = Timer.periodic(Duration(seconds: 1), (_) => _updateTime());
     animationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 2),
@@ -40,11 +50,18 @@ class CheckInController extends GetxController
   @override
   void onClose() {
     animationController.dispose();
+    _timer?.cancel();
     super.onClose();
   }
 
   void checkIn() {
     logger.i("Check-in berhasil");
+  }
+
+  void _updateTime() {
+    final now = DateTime.now();
+    currentTime.value = DateFormat('HH:mm:ss').format(now);
+    currentDate.value = DateFormat('EEEE, dd MMMM yyyy').format(now);
   }
 
   Future<bool> hasCheckedInToday(String displayName, String uid) async {
@@ -91,6 +108,8 @@ class CheckInController extends GetxController
           }
         }
 
+        isLoading.value = true;
+
         // 2. Dapatkan lokasi sekarang
         Position currentPosition = await Geolocator.getCurrentPosition();
 
@@ -112,6 +131,7 @@ class CheckInController extends GetxController
           // 5. Simpan ke Firebase
           final now = DateTime.now();
           final today = DateFormat('yyyy-MM-dd').format(now);
+          final time = DateFormat('HH:mm:ss').format(now);
 
           await FirebaseFirestore.instance
               .collection('attendance')
@@ -120,7 +140,7 @@ class CheckInController extends GetxController
               .doc(today)
               .set({
                 'name': displayName,
-                'time': today,
+                'time': '$today $time',
                 'latitude': currentPosition.latitude,
                 'longitude': currentPosition.longitude,
                 'status': 'Check In',
@@ -147,6 +167,8 @@ class CheckInController extends GetxController
           backgroundColor: ColorList.dangerColor,
           icon: Icons.error,
         );
+      } finally {
+        isLoading.value = false;
       }
     }
   }

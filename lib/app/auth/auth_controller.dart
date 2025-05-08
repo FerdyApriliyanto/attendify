@@ -1,5 +1,6 @@
 import 'package:attendify/app/data/models/user_model.dart';
 import 'package:attendify/app/routes/app_pages.dart';
+import 'package:attendify/app/utils/loading_popup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -114,6 +115,8 @@ class AuthController extends GetxController {
 
   Future<void> login() async {
     try {
+      LoadingPopup.showLoadingPopup();
+
       await _googleSignIn.signOut();
       await _googleSignIn.signIn().then((value) => _currentUser = value);
 
@@ -215,6 +218,8 @@ class AuthController extends GetxController {
       }
     } catch (error) {
       logger.e(error);
+    } finally {
+      LoadingPopup.hideLoadingPopup();
     }
   }
 

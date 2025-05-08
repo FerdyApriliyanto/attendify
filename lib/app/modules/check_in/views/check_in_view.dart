@@ -1,6 +1,8 @@
 import 'package:attendify/app/modules/check_in/controllers/check_in_controller.dart';
+import 'package:attendify/app/utils/color_list.dart';
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CheckInView extends GetView<CheckInController> {
@@ -9,63 +11,100 @@ class CheckInView extends GetView<CheckInController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+        title: Text(
+          'Check In',
+          style: GoogleFonts.poppins(
+            textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+      ),
       body: Center(
-        child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(controller.formattedTime()),
-              Text(controller.formattedTime(isDay: true)),
-              const SizedBox(
-                height: 40,
+              Obx(
+                () => Text(
+                  controller.currentTime.value,
+                  style: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold,
+                    color: ColorList.primaryColor,
+                  ),
+                ),
               ),
-              AnimatedBuilder(
-                  animation: controller.animationController,
-                  builder: (context, child) {
-                    double scale =
-                        1 + (controller.animationController.value * 0.1);
-                    return Transform.scale(
-                      scale: scale,
-                      child: child,
-                    );
-                  },
-                  child: GestureDetector(
-                      onTap: controller.checkInAttendance,
-                      child: Container(
-                          width: 240,
-                          height: 240,
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.green,
-                                blurRadius: 20,
-                                spreadRadius: 5,
-                              ),
-                            ],
+              SizedBox(height: 8),
+              Obx(
+                () => Text(
+                  controller.currentDate.value,
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 60),
+
+              // CHECK-IN BUTTON
+              AvatarGlow(
+                glowColor: Colors.black,
+                glowRadiusFactor: 0.2,
+                duration: Duration(seconds: 2),
+                glowCount: 1,
+                child: GestureDetector(
+                  onTap: controller.checkInAttendance,
+                  child: Obx(
+                    () => Container(
+                      height: 220,
+                      width: 220,
+                      decoration: BoxDecoration(
+                        color: ColorList.primaryColor,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 10,
+                            offset: Offset(0, 4),
                           ),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.back_hand_outlined,
-                                  color: Colors.white,
-                                  size: 28,
-                                ),
-                                const SizedBox(
-                                  height: 6,
-                                ),
-                                Text('Check In',
+                        ],
+                      ),
+                      child:
+                          controller.isLoading.value
+                              ? CircularProgressIndicator(color: Colors.white,)
+                              : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                    size: 50,
+                                  ),
+                                  Text(
+                                    'Check In',
                                     style: GoogleFonts.inter(
-                                        textStyle: TextStyle(
-                                            fontSize: 28,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500))),
-                              ],
-                            ),
-                          ))))
+                                      textStyle: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
