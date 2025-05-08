@@ -44,7 +44,6 @@ class BottomNavView extends GetView<BottomNavController> {
           showUnselectedLabels: false,
           selectedItemColor: ColorList.primaryColor,
           unselectedItemColor: Colors.grey,
-          backgroundColor: Colors.white,
           elevation: 0,
           items: [
             BottomNavigationBarItem(
