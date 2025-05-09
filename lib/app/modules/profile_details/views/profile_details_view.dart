@@ -15,15 +15,6 @@ class ProfileDetailsView extends GetView<ProfileDetailsController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.nameController.text =
-        authController.currentLoggedInUserModel.value.name!;
-    controller.emailController.text =
-        authController.currentLoggedInUserModel.value.email!;
-    controller.positionController.text =
-        authController.currentLoggedInUserModel.value.position!;
-    controller.statusController.text =
-        authController.currentLoggedInUserModel.value.status!;
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
