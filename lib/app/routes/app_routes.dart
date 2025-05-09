@@ -13,6 +13,7 @@ abstract class Routes {
   static const CHAT_ROOM = _Paths.CHAT_ROOM;
   static const FIND_FRIEND = _Paths.FIND_FRIEND;
   static const UPDATE_STATUS = _Paths.UPDATE_STATUS;
+  static const OFFICE_LOCATION = _Paths.OFFICE_LOCATION;
   static const CHANGE_PROFILE = _Paths.CHANGE_PROFILE;
   static const BOTTOM_NAV = _Paths.BOTTOM_NAV;
 }
@@ -25,6 +26,7 @@ abstract class _Paths {
   static const CHAT_ROOM = '/chat-room';
   static const FIND_FRIEND = '/find-friend';
   static const UPDATE_STATUS = '/update-status';
+  static const OFFICE_LOCATION = '/office-location';
   static const CHANGE_PROFILE = '/change-profile';
   static const BOTTOM_NAV = '/bottom-nav';
 }

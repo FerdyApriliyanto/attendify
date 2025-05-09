@@ -24,8 +24,8 @@ class CheckInController extends GetxController
 
   late AnimationController animationController;
   // Lokasi kantor (misalnya: latitude dan longitude kantor)
-  final double officeLat = 37.4219985;
-  final double officeLng = -122.084;
+  // final double officeLat = 37.4219985;
+  // final double officeLng = -122.084;
   final double radiusMeter = 100;
 
   String formattedTime({bool? isDay}) {
@@ -92,7 +92,7 @@ class CheckInController extends GetxController
       );
     } else {
       try {
-        // 1. Cek permission lokasi
+        // REQUEST LOCATION PERMISSION
         LocationPermission permission = await Geolocator.checkPermission();
         if (permission == LocationPermission.denied ||
             permission == LocationPermission.deniedForever) {
@@ -110,25 +110,35 @@ class CheckInController extends GetxController
 
         isLoading.value = true;
 
-        // 2. Dapatkan lokasi sekarang
+        // GETTING CURRENT POSITION
         Position currentPosition = await Geolocator.getCurrentPosition();
 
-        logger.i('Lat: ${currentPosition.latitude}');
-        logger.i('Long: ${currentPosition.longitude}');
+        logger.i('LAT: ${currentPosition.latitude}');
+        logger.i('LONG: ${currentPosition.longitude}');
 
-        // 3. Hitung jarak dari kantor
+        //GETTING OFFICE LOCATION
+        DocumentSnapshot officeLoc =
+            await FirebaseFirestore.instance
+                .collection('office')
+                .doc('location')
+                .get();
+
+        // COUNT CURRENT LOCATION DISTANCE WITH OFFICE'S LOCATION
         double distance = Geolocator.distanceBetween(
           currentPosition.latitude,
           currentPosition.longitude,
-          officeLat,
-          officeLng,
+          double.parse(officeLoc['latitude']),
+          double.parse(officeLoc['longitude']),
         );
+
+        logger.i('Office LAT: ${officeLoc['latitude']}');
+        logger.i('Office LONG: ${officeLoc['longitude']}');
 
         logger.i('Distance: $distance');
 
-        // 4. Cek apakah dalam radius
+        // CHECK IF USER IS INSIDE OFFICE LOCATION
         if (distance <= radiusMeter) {
-          // 5. Simpan ke Firebase
+          // STORE DATA TO FIREBASE
           final now = DateTime.now();
           final today = DateFormat('yyyy-MM-dd').format(now);
           final time = DateFormat('HH:mm:ss').format(now);

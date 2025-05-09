@@ -1,3 +1,5 @@
+import 'package:attendify/app/modules/office_location/bindings/office_location_binding.dart';
+import 'package:attendify/app/modules/office_location/views/office_location_view.dart';
 import 'package:get/get.dart';
 
 import 'package:attendify/app/modules/bottomNav/bindings/bottom_nav_binding.dart';
@@ -55,6 +57,11 @@ class AppPages {
       name: _Paths.UPDATE_STATUS,
       page: () => UpdateStatusView(),
       binding: UpdateStatusBinding(),
+    ),
+    GetPage(
+      name: _Paths.OFFICE_LOCATION,
+      page: () => OfficeLocationView(),
+      binding: OfficeLocationBinding(),
     ),
     GetPage(
       name: _Paths.CHANGE_PROFILE,

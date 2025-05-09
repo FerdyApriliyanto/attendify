@@ -129,6 +129,18 @@ class ProfileView extends GetView<ProfileController> {
                   authController.currentLoggedInUserModel.value.position ==
                           'Admin'
                       ? ProfileMenuWidget(
+                        menuIcon: Icon(Icons.pin_drop_outlined, size: 30),
+                        menuTitle: 'Office Location',
+                        onTap: () => Get.toNamed(Routes.OFFICE_LOCATION),
+                      )
+                      : SizedBox(),
+                  authController.currentLoggedInUserModel.value.position ==
+                          'Admin'
+                      ? SizedBox(height: 26)
+                      : SizedBox(),
+                  authController.currentLoggedInUserModel.value.position ==
+                          'Admin'
+                      ? ProfileMenuWidget(
                         menuIcon: Icon(Icons.print_outlined, size: 30),
                         menuTitle: 'Print Recap',
                         onTap: () => controller.pickDateAndGeneratePDF(context),
