@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 
 import 'package:attendify/app/modules/bottomNav/bindings/bottom_nav_binding.dart';
 import 'package:attendify/app/modules/bottomNav/views/bottom_nav_view.dart';
-import 'package:attendify/app/modules/change_profile/bindings/change_profile_binding.dart';
-import 'package:attendify/app/modules/change_profile/views/change_profile_view.dart';
+import 'package:attendify/app/modules/profile_details/bindings/profile_details_binding.dart';
+import 'package:attendify/app/modules/profile_details/views/profile_details_view.dart';
 import 'package:attendify/app/modules/chat_room/bindings/chat_room_binding.dart';
 import 'package:attendify/app/modules/chat_room/views/chat_room_view.dart';
 import 'package:attendify/app/modules/find_friend/bindings/find_friend_binding.dart';
@@ -58,8 +58,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CHANGE_PROFILE,
-      page: () => ChangeProfileView(),
-      binding: ChangeProfileBinding(),
+      page: () => ProfileDetailsView(),
+      binding: ProfileDetailsBinding(),
     ),
     GetPage(
       name: _Paths.BOTTOM_NAV,

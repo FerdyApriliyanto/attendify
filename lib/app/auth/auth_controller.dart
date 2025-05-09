@@ -236,33 +236,6 @@ class AuthController extends GetxController {
   // END
 
   // PROFILE
-  Future<void> updateProfile(String name, String status) async {
-    String updatedTime = DateTime.now().toIso8601String();
-    String lastSignInTime =
-        userCredential!.user!.metadata.lastSignInTime!.toIso8601String();
-
-    CollectionReference users = firestore.collection('users');
-
-    await users.doc(_currentUser!.email).update({
-      'name': name,
-      'keyName': name[0].toUpperCase(),
-      'status': status,
-      'lastSignInTime': lastSignInTime,
-      'updatedTime': updatedTime,
-    });
-
-    currentLoggedInUserModel.update((currentLoggedInUserModel) {
-      currentLoggedInUserModel!.name = name;
-      currentLoggedInUserModel.keyName = name[0].toUpperCase();
-      currentLoggedInUserModel.status = status;
-      currentLoggedInUserModel.lastSignInTime = lastSignInTime;
-      currentLoggedInUserModel.updatedTime = updatedTime;
-    });
-
-    currentLoggedInUserModel.refresh();
-    Get.back();
-  }
-
   Future<void> updateStatus(String status) async {
     String updatedTime = DateTime.now().toIso8601String();
 

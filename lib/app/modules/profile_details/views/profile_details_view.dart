@@ -1,18 +1,17 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:attendify/app/auth/auth_controller.dart';
-import 'package:attendify/app/modules/change_profile/widgets/change_profile_field_widget.dart';
-import 'package:attendify/app/utils/color_list.dart';
+import 'package:attendify/app/modules/profile_details/widgets/change_profile_field_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../controllers/change_profile_controller.dart';
+import '../controllers/profile_details_controller.dart';
 
-class ChangeProfileView extends GetView<ChangeProfileController> {
+class ProfileDetailsView extends GetView<ProfileDetailsController> {
   final authController = Get.find<AuthController>();
 
-  ChangeProfileView({super.key});
+  ProfileDetailsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,7 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         title: Text(
-          'Edit Profile',
+          'My Details',
           style: GoogleFonts.poppins(
             textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
@@ -72,6 +71,7 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
             ChangeProfileFieldWidget(
               label: 'Name',
               controller: controller.nameController,
+              enabled: false,
             ),
             SizedBox(height: 18),
             ChangeProfileFieldWidget(
@@ -89,31 +89,7 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
             ChangeProfileFieldWidget(
               label: 'Status',
               controller: controller.statusController,
-            ),
-            SizedBox(height: 40),
-            SizedBox(
-              child: ElevatedButton(
-                onPressed:
-                    () => authController.updateProfile(
-                      controller.nameController.text,
-                      controller.statusController.text,
-                    ),
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  backgroundColor: ColorList.primaryColor,
-                ),
-                child: Text(
-                  'UPDATE',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+              enabled: false,
             ),
           ],
         ),

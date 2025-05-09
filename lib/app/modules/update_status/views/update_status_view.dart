@@ -1,5 +1,5 @@
 import 'package:attendify/app/auth/auth_controller.dart';
-import 'package:attendify/app/modules/change_profile/widgets/change_profile_field_widget.dart';
+import 'package:attendify/app/modules/profile_details/widgets/change_profile_field_widget.dart';
 import 'package:attendify/app/utils/color_list.dart';
 import 'package:flutter/material.dart';
 

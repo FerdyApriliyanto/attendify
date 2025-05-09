@@ -95,7 +95,7 @@ class ProfileView extends GetView<ProfileController> {
                         backgroundColor: ColorList.primaryColor,
                         foregroundColor: Colors.white,
                       ),
-                      child: Text('Edit Profile'),
+                      child: Text('Details'),
                     ),
                   ],
                 ),
@@ -110,7 +110,7 @@ class ProfileView extends GetView<ProfileController> {
                 children: [
                   ProfileMenuWidget(
                     menuIcon: Icon(Icons.person_outline_outlined, size: 32),
-                    menuTitle: 'Edit Profile',
+                    menuTitle: 'Profile Details',
                     onTap: () => Get.toNamed(Routes.CHANGE_PROFILE),
                   ),
                   SizedBox(height: 26),
