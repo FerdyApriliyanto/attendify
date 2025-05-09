@@ -29,61 +29,68 @@ class ProfileDetailsView extends GetView<ProfileDetailsController> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: ListView(
-          children: [
-            AvatarGlow(
-              glowColor: Colors.black,
-              child: Container(
-                margin: EdgeInsets.all(16),
-                width: 120,
-                height: 120,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(200),
-                  child:
-                      authController.currentLoggedInUserModel.value.photoUrl ==
-                              null
-                          ? Image.asset(
-                            'assets/logo/noimage.png',
-                            fit: BoxFit.cover,
-                          )
-                          : Image.network(
-                            authController
-                                .currentLoggedInUserModel
-                                .value
-                                .photoUrl!,
-                            fit: BoxFit.cover,
-                          ),
-                ),
+      body: ListView(
+        padding: EdgeInsets.all(20),
+        children: [
+          AvatarGlow(
+            glowColor: Colors.black,
+            glowRadiusFactor: 0.2,
+            child: Container(
+              margin: EdgeInsets.all(16),
+              width: 200,
+              height: 200,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(200),
+                    child:
+                        authController
+                                    .currentLoggedInUserModel
+                                    .value
+                                    .photoUrl ==
+                                null
+                            ? Image.asset(
+                              'assets/logo/noimage.png',
+                              fit: BoxFit.cover,
+                            )
+                            : Image.network(
+                              authController
+                                  .currentLoggedInUserModel
+                                  .value
+                                  .photoUrl!,
+                              fit: BoxFit.cover,
+                            ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 40),
-            ChangeProfileFieldWidget(
-              label: 'Name',
-              controller: controller.nameController,
-              enabled: false,
-            ),
-            SizedBox(height: 18),
-            ChangeProfileFieldWidget(
-              label: 'Email',
-              controller: controller.emailController,
-              enabled: false,
-            ),
-            SizedBox(height: 18),
-            ChangeProfileFieldWidget(
-              label: 'Position',
-              controller: controller.positionController,
-              enabled: false,
-            ),
-            SizedBox(height: 18),
-            ChangeProfileFieldWidget(
-              label: 'Status',
-              controller: controller.statusController,
-              enabled: false,
-            ),
-          ],
-        ),
+          ),
+          SizedBox(height: 40),
+          ChangeProfileFieldWidget(
+            label: 'Name',
+            controller: controller.nameController,
+            enabled: false,
+          ),
+          SizedBox(height: 18),
+          ChangeProfileFieldWidget(
+            label: 'Email',
+            controller: controller.emailController,
+            enabled: false,
+          ),
+          SizedBox(height: 18),
+          ChangeProfileFieldWidget(
+            label: 'Position',
+            controller: controller.positionController,
+            enabled: false,
+          ),
+          SizedBox(height: 18),
+          ChangeProfileFieldWidget(
+            label: 'Status',
+            controller: controller.statusController,
+            enabled: false,
+          ),
+        ],
       ),
     );
   }
