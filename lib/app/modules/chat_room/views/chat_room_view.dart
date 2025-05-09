@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:attendify/app/auth/auth_controller.dart';
 import 'package:attendify/app/modules/chat_room/widgets/chat_bubble_widget.dart';
 import 'package:attendify/app/modules/chat_room/widgets/emoji_picker_widget.dart';
-import 'package:attendify/app/routes/app_pages.dart';
 import 'package:attendify/app/utils/color_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +33,7 @@ class ChatRoomView extends GetView<ChatRoomController> {
         leadingWidth: 80,
         leading: InkWell(
           borderRadius: BorderRadius.circular(100),
-          onTap: () => Get.offAllNamed(Routes.BOTTOM_NAV),
+          onTap: () => Get.back(),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
