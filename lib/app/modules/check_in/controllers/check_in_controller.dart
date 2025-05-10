@@ -23,9 +23,7 @@ class CheckInController extends GetxController
   Timer? _timer;
 
   late AnimationController animationController;
-  // Lokasi kantor (misalnya: latitude dan longitude kantor)
-  // final double officeLat = 37.4219985;
-  // final double officeLng = -122.084;
+
   final double radiusMeter = 100;
 
   String formattedTime({bool? isDay}) {
