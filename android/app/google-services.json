@@ -12,7 +12,28 @@
           "package_name": "com.example.attendify"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "868939235910-6ep77u87m37r005a1alc4abbdu24tcst.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.attendify",
+            "certificate_hash": "0d658b636b90c94c08bfc74645207550a0a2314a"
+          }
+        },
+        {
+          "client_id": "868939235910-is5h35e9nb0t5bcnl8f255k175irdf7o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.attendify",
+            "certificate_hash": "6f4af64016ba11931feb21f4c2ba6b8ccc91311a"
+          }
+        },
+        {
+          "client_id": "868939235910-rn809g2bcks6u2ntemscondje07jedpm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDU3ofBL9pPk5OD7dLhz9GNq1E5_gBOLso"
@@ -20,7 +41,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "868939235910-rn809g2bcks6u2ntemscondje07jedpm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "868939235910-jvjj2t9dt33qaqqe29tectcm2uhsqqip.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.attendify"
+              }
+            }
+          ]
         }
       }
     }
