@@ -67,23 +67,30 @@ class ProfileView extends GetView<ProfileController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Obx(
-                      () => Text(
-                        authController.currentLoggedInUserModel.value.name ??
-                            "Lorem Ipsum",
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                      () => SizedBox(
+                        width: 200,
+                        child: Text(
+                          authController.currentLoggedInUserModel.value.name ??
+                              "No Name",
+                          style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              overflow: TextOverflow.ellipsis,
+                              fontSize: 20,
+                            ),
                           ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     ),
-                    Text(
-                      authController.currentLoggedInUserModel.value.email ??
-                          'lorem.ipsum@gmail.com',
-                      style: GoogleFonts.inter(textStyle: TextStyle()),
-                      textAlign: TextAlign.center,
+                    SizedBox(
+                      width: 200,
+                      child: Text(
+                        authController.currentLoggedInUserModel.value.email ??
+                            'no.email@gmail.com',
+                        style: GoogleFonts.inter(textStyle: TextStyle(overflow: TextOverflow.ellipsis)),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                     SizedBox(height: 8),
                     ElevatedButton(
