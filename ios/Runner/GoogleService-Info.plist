@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>868939235910-jvjj2t9dt33qaqqe29tectcm2uhsqqip.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.868939235910-jvjj2t9dt33qaqqe29tectcm2uhsqqip</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>868939235910-6ep77u87m37r005a1alc4abbdu24tcst.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBBWdzNxzJlzrwlkZZywPbgdwZGM73PA5o</string>
+	<key>GCM_SENDER_ID</key>
+	<string>868939235910</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.attendify</string>
+	<key>PROJECT_ID</key>
+	<string>attendify-38452</string>
+	<key>STORAGE_BUCKET</key>
+	<string>attendify-38452.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:868939235910:ios:cbde18aaccbcdf2444c047</string>
+</dict>
+</plist>
