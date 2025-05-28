@@ -1,12 +1,18 @@
+import 'dart:io';
+
 import 'package:attendify/app/data/models/user_model.dart';
 import 'package:attendify/app/routes/app_pages.dart';
+import 'package:attendify/app/utils/color_list.dart';
 import 'package:attendify/app/utils/loading_popup.dart';
+import 'package:attendify/app/utils/modern_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 class AuthController extends GetxController {
   var logger = Logger(printer: PrettyPrinter());
@@ -113,7 +119,23 @@ class AuthController extends GetxController {
     });
   }
 
+  Future<String> getDeviceId() async {
+    final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+    if (Platform.isAndroid) {
+      final androidInfo = await deviceInfo.androidInfo;
+      return androidInfo.id;
+    } else if (Platform.isIOS) {
+      final iosInfo = await deviceInfo.iosInfo;
+      return iosInfo.identifierForVendor ?? 'unknown';
+    } else {
+      return 'unknown';
+    }
+  }
+
   Future<void> login() async {
+    final String currentDeviceId = await getDeviceId();
+
     try {
       LoadingPopup.showLoadingPopup();
 
@@ -162,6 +184,7 @@ class AuthController extends GetxController {
                     : 'Employee',
             'photoUrl': _currentUser!.photoUrl,
             'status': '',
+            'deviceId': currentDeviceId,
             'creationTime':
                 userCredential!.user!.metadata.creationTime!.toIso8601String(),
             'lastSignInTime':
@@ -172,6 +195,24 @@ class AuthController extends GetxController {
 
           users.doc(_currentUser!.email).collection('chats');
         } else {
+          final storedDeviceId =
+              await firestore
+                  .collection('users')
+                  .doc(_currentUser!.email)
+                  .get();
+          final registeredDeviceId = storedDeviceId.data()?['deviceId'];
+
+          if (registeredDeviceId != currentDeviceId) {
+            await FirebaseAuth.instance.signOut();
+            ModernSnackbar.showModernSnackbar(
+              title: 'Access Denied',
+              message: 'This account is only allowed on the original device.',
+              backgroundColor: ColorList.dangerColor,
+              icon: Icons.warning,
+            );
+            return;
+          }
+
           await users.doc(_currentUser!.email).update({
             'lastSignInTime':
                 userCredential!.user!.metadata.lastSignInTime!
