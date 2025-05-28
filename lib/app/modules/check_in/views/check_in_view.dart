@@ -73,8 +73,8 @@ class CheckInView extends GetView<CheckInController> {
                                 : controller.checkInAttendance,
                         child: Obx(
                           () => Container(
-                            height: 160,
-                            width: 160,
+                            height: 140,
+                            width: 140,
                             decoration: BoxDecoration(
                               color:
                                   controller.isCheckOutLoading.value
@@ -101,7 +101,7 @@ class CheckInView extends GetView<CheckInController> {
                                         Icon(
                                           Icons.check,
                                           color: Colors.white,
-                                          size: 50,
+                                          size: 40,
                                         ),
                                         Text(
                                           'Check In',
@@ -109,7 +109,7 @@ class CheckInView extends GetView<CheckInController> {
                                             textStyle: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
-                                              fontSize: 20,
+                                              fontSize: 16,
                                             ),
                                           ),
                                         ),
@@ -133,8 +133,8 @@ class CheckInView extends GetView<CheckInController> {
                                 : controller.checkOutAttendance,
                         child: Obx(
                           () => Container(
-                            height: 160,
-                            width: 160,
+                            height: 140,
+                            width: 140,
                             decoration: BoxDecoration(
                               color:
                                   controller.isCheckInLoading.value
@@ -161,7 +161,7 @@ class CheckInView extends GetView<CheckInController> {
                                         Icon(
                                           Icons.logout,
                                           color: Colors.white,
-                                          size: 50,
+                                          size: 40,
                                         ),
                                         Text(
                                           'Check Out',
@@ -169,7 +169,7 @@ class CheckInView extends GetView<CheckInController> {
                                             textStyle: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
-                                              fontSize: 20,
+                                              fontSize: 16,
                                             ),
                                           ),
                                         ),
