@@ -27,7 +27,7 @@ class CheckInView extends GetView<CheckInController> {
         ),
         body: Center(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: EdgeInsets.all(Get.width * 0.06),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -55,7 +55,7 @@ class CheckInView extends GetView<CheckInController> {
                   ),
                 ),
                 SizedBox(height: 60),
-      
+
                 // CHECK-IN BUTTON
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -95,7 +95,8 @@ class CheckInView extends GetView<CheckInController> {
                                       color: Colors.white,
                                     )
                                     : Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Icon(
                                           Icons.check,
@@ -154,7 +155,8 @@ class CheckInView extends GetView<CheckInController> {
                                       color: Colors.white,
                                     )
                                     : Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Icon(
                                           Icons.logout,
