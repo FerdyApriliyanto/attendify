@@ -133,6 +133,43 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<void> insertDataToLocalModel() async {
+    CollectionReference users = firestore.collection('users');
+
+    final currentUser = await users.doc(_currentUser!.email).get();
+    final currentUserData = currentUser.data() as Map<String, dynamic>;
+
+    currentLoggedInUserModel(UserModel.fromJson(currentUserData));
+    currentLoggedInUserModel.refresh();
+
+    final listChat =
+        await users.doc(_currentUser!.email).collection('chats').get();
+
+    if (listChat.docs.isNotEmpty) {
+      List<ChatUser> listChatUser = [];
+      for (var element in listChat.docs) {
+        var dataDocChat = element.data();
+        var dataDocChatId = element.id;
+        listChatUser.add(
+          ChatUser(
+            chatId: dataDocChatId,
+            connection: dataDocChat['connection'],
+            lastTime: dataDocChat['lastTime'],
+            totalUnread: dataDocChat['totalUnread'],
+          ),
+        );
+      }
+      currentLoggedInUserModel.update((currentLoggedInUserModel) {
+        currentLoggedInUserModel!.chats = listChatUser;
+      });
+    } else {
+      currentLoggedInUserModel.update((currentLoggedInUserModel) {
+        currentLoggedInUserModel!.chats = [];
+      });
+    }
+    currentLoggedInUserModel.refresh();
+  }
+
   Future<void> login() async {
     final String currentDeviceId = await getDeviceId();
 
@@ -170,42 +207,6 @@ class AuthController extends GetxController {
         box.write('status', true);
         // END
 
-        // GETTING & PUTTING CURRENT USER LOGGED IN DATA INTO LOCAL MODEL
-        final currentUser = await users.doc(_currentUser!.email).get();
-        final currentUserData = currentUser.data() as Map<String, dynamic>;
-
-        currentLoggedInUserModel(UserModel.fromJson(currentUserData));
-        currentLoggedInUserModel.refresh();
-
-        final listChat =
-            await users.doc(_currentUser!.email).collection('chats').get();
-
-        if (listChat.docs.isNotEmpty) {
-          List<ChatUser> listChatUser = [];
-          for (var element in listChat.docs) {
-            var dataDocChat = element.data();
-            var dataDocChatId = element.id;
-            listChatUser.add(
-              ChatUser(
-                chatId: dataDocChatId,
-                connection: dataDocChat['connection'],
-                lastTime: dataDocChat['lastTime'],
-                totalUnread: dataDocChat['totalUnread'],
-              ),
-            );
-          }
-          currentLoggedInUserModel.update((currentLoggedInUserModel) {
-            currentLoggedInUserModel!.chats = listChatUser;
-          });
-        } else {
-          currentLoggedInUserModel.update((currentLoggedInUserModel) {
-            currentLoggedInUserModel!.chats = [];
-          });
-        }
-        // END
-        currentLoggedInUserModel.refresh();
-        isAuth.value = true;
-
         // INSERT DATA TO FIRESTORE
         final isNewUser = await users.doc(_currentUser!.email).get();
 
@@ -230,6 +231,9 @@ class AuthController extends GetxController {
             'updatedTime': DateTime.now().toIso8601String(),
           });
 
+          insertDataToLocalModel();
+          isAuth.value = true;
+
           Get.offAllNamed(Routes.BOTTOM_NAV);
         } else {
           final storedDeviceId =
@@ -242,15 +246,18 @@ class AuthController extends GetxController {
           if (registeredDeviceId != currentDeviceId) {
             LoadingPopup.hideLoadingPopup();
             await _googleSignIn.signOut();
-
+            isAuth.value = false;
             ModernSnackbar.showModernSnackbar(
               title: 'Access Denied',
               message: 'This account is only allowed on the original device.',
               backgroundColor: ColorList.dangerColor,
               icon: Icons.warning,
             );
+            isAuth.value = false;
             return;
           } else {
+            insertDataToLocalModel();
+            isAuth.value = true;
             Get.offAllNamed(Routes.BOTTOM_NAV);
           }
 
