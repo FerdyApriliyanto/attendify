@@ -207,6 +207,8 @@ class AuthController extends GetxController {
         box.write('status', true);
         // END
 
+        insertDataToLocalModel();
+
         // INSERT DATA TO FIRESTORE
         final isNewUser = await users.doc(_currentUser!.email).get();
 
@@ -230,8 +232,6 @@ class AuthController extends GetxController {
                     .toIso8601String(),
             'updatedTime': DateTime.now().toIso8601String(),
           });
-
-          insertDataToLocalModel();
           isAuth.value = true;
 
           Get.offAllNamed(Routes.BOTTOM_NAV);
@@ -257,9 +257,8 @@ class AuthController extends GetxController {
 
             return;
           } else {
-            insertDataToLocalModel();
             isAuth.value = true;
-            
+
             Get.offAllNamed(Routes.BOTTOM_NAV);
           }
 
