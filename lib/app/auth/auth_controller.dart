@@ -193,7 +193,7 @@ class AuthController extends GetxController {
             'updatedTime': DateTime.now().toIso8601String(),
           });
 
-          users.doc(_currentUser!.email).collection('chats');
+          Get.offAllNamed(Routes.BOTTOM_NAV);
         } else {
           final storedDeviceId =
               await firestore
@@ -203,7 +203,9 @@ class AuthController extends GetxController {
           final registeredDeviceId = storedDeviceId.data()?['deviceId'];
 
           if (registeredDeviceId != currentDeviceId) {
-            await FirebaseAuth.instance.signOut();
+            LoadingPopup.hideLoadingPopup();
+            await _googleSignIn.signOut();
+
             ModernSnackbar.showModernSnackbar(
               title: 'Access Denied',
               message: 'This account is only allowed on the original device.',
@@ -211,6 +213,8 @@ class AuthController extends GetxController {
               icon: Icons.warning,
             );
             return;
+          } else {
+            Get.offAllNamed(Routes.BOTTOM_NAV);
           }
 
           await users.doc(_currentUser!.email).update({
@@ -256,8 +260,6 @@ class AuthController extends GetxController {
         // END
         currentLoggedInUserModel.refresh();
         isAuth.value = true;
-
-        Get.offAllNamed(Routes.BOTTOM_NAV);
       } else {
         logger.e('Login Tidak Berhasil');
       }
