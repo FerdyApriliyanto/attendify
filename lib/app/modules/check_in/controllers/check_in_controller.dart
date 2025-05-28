@@ -16,7 +16,8 @@ class CheckInController extends GetxController
 
   final authController = Get.find<AuthController>();
 
-  var isLoading = false.obs;
+  var isCheckInLoading = false.obs;
+  var isCheckOutLoading = false.obs;
 
   var currentTime = ''.obs;
   var currentDate = ''.obs;
@@ -106,7 +107,7 @@ class CheckInController extends GetxController
           }
         }
 
-        isLoading.value = true;
+        isCheckInLoading.value = true;
 
         // GETTING CURRENT POSITION
         Position currentPosition = await Geolocator.getCurrentPosition();
@@ -176,8 +177,112 @@ class CheckInController extends GetxController
           icon: Icons.error,
         );
       } finally {
-        isLoading.value = false;
+        isCheckInLoading.value = false;
       }
+    }
+  }
+
+  Future<void> checkOutAttendance() async {
+    final displayName =
+        authController.userCredential?.user?.displayName ?? 'No Name';
+    final uid = authController.userCredential?.user?.uid ?? 'No UID';
+    final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+    // Cek apakah sudah check-in
+    final checkinDoc =
+        await FirebaseFirestore.instance
+            .collection('attendance')
+            .doc('$displayName - $uid')
+            .collection('checkin')
+            .doc(today)
+            .get();
+
+    if (!checkinDoc.exists) {
+      ModernSnackbar.showModernSnackbar(
+        title: 'Checkout Rejected',
+        message: 'You haven’t checked in today.',
+        backgroundColor: ColorList.dangerColor,
+        icon: Icons.error,
+      );
+      return;
+    }
+
+    // Cek apakah sudah checkout
+    final checkoutDoc =
+        await FirebaseFirestore.instance
+            .collection('attendance')
+            .doc('$displayName - $uid')
+            .collection('checkout')
+            .doc(today)
+            .get();
+
+    if (checkoutDoc.exists) {
+      ModernSnackbar.showModernSnackbar(
+        title: 'Checkout Rejected',
+        message: 'You have already checked out today.',
+        backgroundColor: ColorList.dangerColor,
+        icon: Icons.error,
+      );
+      return;
+    }
+
+    try {
+      isCheckOutLoading.value = true;
+
+      Position currentPosition = await Geolocator.getCurrentPosition();
+
+      //GETTING OFFICE LOCATION
+      DocumentSnapshot officeLoc =
+          await FirebaseFirestore.instance
+              .collection('office')
+              .doc('location')
+              .get();
+
+      // COUNT CURRENT LOCATION DISTANCE WITH OFFICE'S LOCATION
+      double distance = Geolocator.distanceBetween(
+        currentPosition.latitude,
+        currentPosition.longitude,
+        double.parse(officeLoc['latitude']),
+        double.parse(officeLoc['longitude']),
+      );
+
+      if (distance <= radiusMeter) {
+        await FirebaseFirestore.instance
+            .collection('attendance')
+            .doc('$displayName - $uid')
+            .collection('checkout')
+            .doc(today)
+            .set({
+              'name': displayName,
+              'time': today,
+              'latitude': currentPosition.latitude,
+              'longitude': currentPosition.longitude,
+              'status': 'Check Out',
+              'userId': uid,
+            });
+
+        ModernSnackbar.showModernSnackbar(
+          title: 'Checkout Successful',
+          message: 'See you again!',
+          icon: Icons.check_circle,
+        );
+      } else {
+        ModernSnackbar.showModernSnackbar(
+          title: 'Checkout Rejected',
+          message: 'You are not in the office area.',
+          backgroundColor: ColorList.dangerColor,
+          icon: Icons.error,
+        );
+      }
+    } catch (e) {
+      ModernSnackbar.showModernSnackbar(
+        title: 'Error',
+        message: e.toString(),
+        backgroundColor: ColorList.dangerColor,
+        icon: Icons.error,
+      );
+    } finally {
+      isCheckOutLoading.value = false;
     }
   }
 }
