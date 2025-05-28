@@ -247,17 +247,19 @@ class AuthController extends GetxController {
             LoadingPopup.hideLoadingPopup();
             await _googleSignIn.signOut();
             isAuth.value = false;
+
             ModernSnackbar.showModernSnackbar(
               title: 'Access Denied',
               message: 'This account is only allowed on the original device.',
               backgroundColor: ColorList.dangerColor,
               icon: Icons.warning,
             );
-            isAuth.value = false;
+
             return;
           } else {
             insertDataToLocalModel();
             isAuth.value = true;
+            
             Get.offAllNamed(Routes.BOTTOM_NAV);
           }
 
