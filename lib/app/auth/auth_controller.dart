@@ -145,6 +145,8 @@ class AuthController extends GetxController {
       final isSignedIn = await _googleSignIn.isSignedIn();
 
       if (isSignedIn) {
+        CollectionReference users = firestore.collection('users');
+
         logger.i('Login Berhasil');
         logger.i(_currentUser);
 
@@ -168,8 +170,43 @@ class AuthController extends GetxController {
         box.write('status', true);
         // END
 
+        // GETTING & PUTTING CURRENT USER LOGGED IN DATA INTO LOCAL MODEL
+        final currentUser = await users.doc(_currentUser!.email).get();
+        final currentUserData = currentUser.data() as Map<String, dynamic>;
+
+        currentLoggedInUserModel(UserModel.fromJson(currentUserData));
+        currentLoggedInUserModel.refresh();
+
+        final listChat =
+            await users.doc(_currentUser!.email).collection('chats').get();
+
+        if (listChat.docs.isNotEmpty) {
+          List<ChatUser> listChatUser = [];
+          for (var element in listChat.docs) {
+            var dataDocChat = element.data();
+            var dataDocChatId = element.id;
+            listChatUser.add(
+              ChatUser(
+                chatId: dataDocChatId,
+                connection: dataDocChat['connection'],
+                lastTime: dataDocChat['lastTime'],
+                totalUnread: dataDocChat['totalUnread'],
+              ),
+            );
+          }
+          currentLoggedInUserModel.update((currentLoggedInUserModel) {
+            currentLoggedInUserModel!.chats = listChatUser;
+          });
+        } else {
+          currentLoggedInUserModel.update((currentLoggedInUserModel) {
+            currentLoggedInUserModel!.chats = [];
+          });
+        }
+        // END
+        currentLoggedInUserModel.refresh();
+        isAuth.value = true;
+
         // INSERT DATA TO FIRESTORE
-        CollectionReference users = firestore.collection('users');
         final isNewUser = await users.doc(_currentUser!.email).get();
 
         if (isNewUser.data() == null) {
@@ -224,42 +261,6 @@ class AuthController extends GetxController {
           });
         }
         // END
-
-        // GETTING & PUTTING CURRENT USER LOGGED IN DATA INTO LOCAL MODEL
-        final currentUser = await users.doc(_currentUser!.email).get();
-        final currentUserData = currentUser.data() as Map<String, dynamic>;
-
-        currentLoggedInUserModel(UserModel.fromJson(currentUserData));
-        currentLoggedInUserModel.refresh();
-
-        final listChat =
-            await users.doc(_currentUser!.email).collection('chats').get();
-
-        if (listChat.docs.isNotEmpty) {
-          List<ChatUser> listChatUser = [];
-          for (var element in listChat.docs) {
-            var dataDocChat = element.data();
-            var dataDocChatId = element.id;
-            listChatUser.add(
-              ChatUser(
-                chatId: dataDocChatId,
-                connection: dataDocChat['connection'],
-                lastTime: dataDocChat['lastTime'],
-                totalUnread: dataDocChat['totalUnread'],
-              ),
-            );
-          }
-          currentLoggedInUserModel.update((currentLoggedInUserModel) {
-            currentLoggedInUserModel!.chats = listChatUser;
-          });
-        } else {
-          currentLoggedInUserModel.update((currentLoggedInUserModel) {
-            currentLoggedInUserModel!.chats = [];
-          });
-        }
-        // END
-        currentLoggedInUserModel.refresh();
-        isAuth.value = true;
       } else {
         logger.e('Login Tidak Berhasil');
       }
