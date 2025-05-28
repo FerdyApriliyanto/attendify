@@ -82,6 +82,20 @@ class CheckInController extends GetxController
         authController.userCredential?.user?.displayName ?? 'No Name';
     String uid = authController.userCredential?.user?.uid ?? 'No UID';
 
+    final now = DateTime.now();
+    
+    final allowedCheckInTime = DateTime(now.year, now.month, now.day, 7, 30);
+
+    if (now.isBefore(allowedCheckInTime)) {
+      ModernSnackbar.showModernSnackbar(
+        title: 'Check-In Rejected',
+        message: 'Check-in only allowed after 07:30 AM',
+        backgroundColor: ColorList.dangerColor,
+        icon: Icons.error,
+      );
+      return;
+    }
+
     if (await hasCheckedInToday(displayName, uid)) {
       ModernSnackbar.showModernSnackbar(
         title: 'Check-In Rejected',
@@ -138,7 +152,6 @@ class CheckInController extends GetxController
         // CHECK IF USER IS INSIDE OFFICE LOCATION
         if (distance <= radiusMeter) {
           // STORE DATA TO FIREBASE
-          final now = DateTime.now();
           final today = DateFormat('yyyy-MM-dd').format(now);
           final time = DateFormat('HH:mm:ss').format(now);
 
@@ -188,7 +201,7 @@ class CheckInController extends GetxController
     final uid = authController.userCredential?.user?.uid ?? 'No UID';
     final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-    // Cek apakah sudah check-in
+    // CHECK IF USER HAS ALREADY CHECK-IN
     final checkinDoc =
         await FirebaseFirestore.instance
             .collection('attendance')
@@ -207,7 +220,7 @@ class CheckInController extends GetxController
       return;
     }
 
-    // Cek apakah sudah checkout
+    // CHECK IF USER HAS ALREADY CHECKED-OUT
     final checkoutDoc =
         await FirebaseFirestore.instance
             .collection('attendance')
