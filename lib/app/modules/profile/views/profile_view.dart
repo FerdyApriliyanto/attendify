@@ -72,6 +72,7 @@ class ProfileView extends GetView<ProfileController> {
                         child: Text(
                           authController.currentLoggedInUserModel.value.name ??
                               "No Name",
+                          textAlign: TextAlign.left,
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -79,7 +80,6 @@ class ProfileView extends GetView<ProfileController> {
                               fontSize: 20,
                             ),
                           ),
-                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
@@ -88,8 +88,10 @@ class ProfileView extends GetView<ProfileController> {
                       child: Text(
                         authController.currentLoggedInUserModel.value.email ??
                             'no.email@gmail.com',
-                        style: GoogleFonts.inter(textStyle: TextStyle(overflow: TextOverflow.ellipsis)),
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.inter(
+                          textStyle: TextStyle(overflow: TextOverflow.ellipsis),
+                        ),
                       ),
                     ),
                     SizedBox(height: 8),
