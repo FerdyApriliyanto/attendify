@@ -83,8 +83,12 @@ class CheckInController extends GetxController
     String uid = authController.userCredential?.user?.uid ?? 'No UID';
 
     final now = DateTime.now();
-    
+
     final allowedCheckInTime = DateTime(now.year, now.month, now.day, 7, 30);
+    final lateTime = DateTime(now.year, now.month, now.day, 8, 15);
+
+    final isLate = now.isAfter(lateTime);
+    final status = isLate ? 'Telat' : 'Tepat Waktu';
 
     if (now.isBefore(allowedCheckInTime)) {
       ModernSnackbar.showModernSnackbar(
@@ -165,13 +169,16 @@ class CheckInController extends GetxController
                 'time': '$today $time',
                 'latitude': currentPosition.latitude,
                 'longitude': currentPosition.longitude,
-                'status': 'Check In',
+                'status': status,
                 'userId': uid,
               });
 
           ModernSnackbar.showModernSnackbar(
             title: 'Check-In Accepted',
-            message: 'Thank you for submitting your attendance today',
+            message:
+                isLate
+                    ? 'Your attendance was counted as late'
+                    : 'Thank you for submitting your attendance today',
             icon: Icons.check_circle,
           );
         } else {
@@ -270,7 +277,6 @@ class CheckInController extends GetxController
               'time': today,
               'latitude': currentPosition.latitude,
               'longitude': currentPosition.longitude,
-              'status': 'Check Out',
               'userId': uid,
             });
 

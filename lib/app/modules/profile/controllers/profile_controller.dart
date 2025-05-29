@@ -24,7 +24,7 @@ class ProfileController extends GetxController {
             title: 'No recap data found',
             message: 'No attendance data found in that time',
             backgroundColor: ColorList.dangerColor,
-            icon: Icons.error
+            icon: Icons.error,
           );
         }
       },
@@ -64,6 +64,7 @@ class ProfileController extends GetxController {
           allData.add({
             'name': data['name'] ?? '-',
             'date': DateFormat('yyyy-MM-dd').format(date),
+            'status': data['status'] ?? '-',
           });
         }
       } catch (e) {
@@ -121,16 +122,21 @@ class ProfileController extends GetxController {
                       pw.SizedBox(height: 6),
                       pw.TableHelper.fromTextArray(
                         context: context,
-                        headers: ['Name', 'Date'],
+                        headers: ['Name', 'Date', 'Status'],
                         data:
                             weekEntry.value
                                 .map(
-                                  (e) => [e['name'] ?? '-', e['date'] ?? '-'],
+                                  (e) => [
+                                    e['name'] ?? '-',
+                                    e['date'] ?? '-',
+                                    e['status'] ?? '-',
+                                  ],
                                 )
                                 .toList(),
                         columnWidths: {
                           0: pw.FlexColumnWidth(2), // "Name Column is Wider"
                           1: pw.FlexColumnWidth(1), // "Date Column"
+                          2: pw.FlexColumnWidth(1),
                         },
                       ),
 
