@@ -207,6 +207,7 @@ class CheckInController extends GetxController
         authController.userCredential?.user?.displayName ?? 'No Name';
     final uid = authController.userCredential?.user?.uid ?? 'No UID';
     final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    final time = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
     // CHECK IF USER HAS ALREADY CHECK-IN
     final checkinDoc =
@@ -274,7 +275,7 @@ class CheckInController extends GetxController
             .doc(today)
             .set({
               'name': displayName,
-              'time': today,
+              'time': time,
               'latitude': currentPosition.latitude,
               'longitude': currentPosition.longitude,
               'userId': uid,

@@ -48,29 +48,54 @@ class ProfileController extends GetxController {
   ) async {
     List<Map<String, dynamic>> allData = [];
 
-    final snapshot =
+    final checkinSnapshot =
         await FirebaseFirestore.instance.collectionGroup('checkin').get();
+    final checkoutSnapshot =
+        await FirebaseFirestore.instance.collectionGroup('checkout').get();
 
-    for (var checkinDoc in snapshot.docs) {
-      final data = checkinDoc.data();
+    Map<String, Map<String, dynamic>> tempData = {};
 
-      if (data['time'] == null) continue;
+    for (var doc in checkinSnapshot.docs) {
+      final data = doc.data();
+      if (data['time'] == null || data['name'] == null) continue;
 
-      try {
-        // Parsing string date "yyyy-MM-dd"
-        final date = DateFormat('yyyy-MM-dd').parse(data['time']);
+      final dateTime = DateTime.parse(data['time']);
+      if (dateTime.month != month || dateTime.year != year) continue;
 
-        if (date.month == month && date.year == year) {
-          allData.add({
-            'name': data['name'] ?? '-',
-            'date': DateFormat('yyyy-MM-dd').format(date),
-            'status': data['status'] ?? '-',
-          });
-        }
-      } catch (e) {
-        continue;
+      final key =
+          '${data['name']}_${DateFormat('yyyy-MM-dd').format(dateTime)}';
+      tempData[key] = {
+        'name': data['name'],
+        'date': DateFormat('yyyy-MM-dd').format(dateTime),
+        'checkIn': DateFormat('HH:mm').format(dateTime),
+        'status': data['status'] ?? '-',
+        'checkOut': '-',
+      };
+    }
+
+    for (var doc in checkoutSnapshot.docs) {
+      final data = doc.data();
+      if (data['time'] == null || data['name'] == null) continue;
+
+      final dateTime = DateTime.parse(data['time']);
+      if (dateTime.month != month || dateTime.year != year) continue;
+
+      final key =
+          '${data['name']}_${DateFormat('yyyy-MM-dd').format(dateTime)}';
+      if (tempData.containsKey(key)) {
+        tempData[key]!['checkOut'] = DateFormat('HH:mm').format(dateTime);
+      } else {
+        tempData[key] = {
+          'name': data['name'],
+          'date': DateFormat('yyyy-MM-dd').format(dateTime),
+          'checkIn': '-',
+          'checkOut': '-',
+          'status': '-',
+        };
       }
     }
+
+    allData = tempData.values.toList();
 
     return allData;
   }
@@ -83,7 +108,6 @@ class ProfileController extends GetxController {
     final pdf = pw.Document();
     final monthName = DateFormat('MMMM').format(DateTime(year, month));
 
-    // Week Grouping
     final Map<int, List<Map<String, dynamic>>> groupedByWeek = {};
 
     for (var entry in data) {
@@ -122,24 +146,31 @@ class ProfileController extends GetxController {
                       pw.SizedBox(height: 6),
                       pw.TableHelper.fromTextArray(
                         context: context,
-                        headers: ['Name', 'Date', 'Status'],
+                        headers: [
+                          'Name',
+                          'Date',
+                          'Check In',
+                          'Check Out',
+                          'Status',
+                        ],
                         data:
-                            weekEntry.value
-                                .map(
-                                  (e) => [
-                                    e['name'] ?? '-',
-                                    e['date'] ?? '-',
-                                    e['status'] ?? '-',
-                                  ],
-                                )
-                                .toList(),
+                            weekEntry.value.map((e) {
+                              return [
+                                e['name'] ?? '-',
+                                e['date'] ?? '-',
+                                e['checkIn'] ?? '-',
+                                e['checkOut'] ?? '-',
+                                e['status'] ?? '-',
+                              ];
+                            }).toList(),
                         columnWidths: {
-                          0: pw.FlexColumnWidth(2), // "Name Column is Wider"
-                          1: pw.FlexColumnWidth(1), // "Date Column"
+                          0: pw.FlexColumnWidth(2),
+                          1: pw.FlexColumnWidth(1.3),
                           2: pw.FlexColumnWidth(1),
+                          3: pw.FlexColumnWidth(1.2),
+                          4: pw.FlexColumnWidth(1.2),
                         },
                       ),
-
                       pw.SizedBox(height: 16),
                     ],
                   );
@@ -152,7 +183,7 @@ class ProfileController extends GetxController {
     await Printing.layoutPdf(
       onLayout: (PdfPageFormat format) async => pdf.save(),
     );
-  }
 
-  // END OF RECAP DATA FUNCTIONS
+    // END OF RECAP DATA FUNCTIONS
+  }
 }
